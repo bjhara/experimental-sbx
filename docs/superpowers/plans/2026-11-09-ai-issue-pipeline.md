@@ -12,7 +12,7 @@ Tasks 6–8 is written before its findings are recorded. Steps marked **[owner]*
 
 1. Add `.gitignore` (Java/Maven `target/`, IDE files, `.env`, `*.env.local`, `.claude/settings.local.json`, `*.pem`, `*.key`).
 2. Add a minimal `README.md` stub (title + one-line purpose; filled in Task 9).
-3. **[owner, confirm first]** Create public repo `bjhara/experimenta-sbx` with `gh repo create --public --source . --push`.
+3. **[owner, confirm first]** Create public repo `bjhara/experimental-sbx` with `gh repo create --public --source . --push`.
 4. **[owner]** Repo settings: enable *Template repository*, *Allow auto-merge*, *Automatically delete head branches*,
    *Secret scanning* + *Push protection*.
 
