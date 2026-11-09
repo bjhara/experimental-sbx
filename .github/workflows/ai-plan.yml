@@ -1,0 +1,28 @@
+name: AI plan
+on:
+  issues:
+    types: [labeled]
+permissions:
+  contents: read
+concurrency:
+  group: ai-issue-${{ github.event.issue.number }}
+  cancel-in-progress: false
+jobs:
+  plan:
+    if: github.event.label.name == 'ai-plan'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - name: Run Claude in a cloud sandbox
+        env:
+          REPO: ${{ github.repository }}
+          ACTOR: ${{ github.actor }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GH_TOKEN: ${{ secrets.AI_GITHUB_TOKEN }}
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PAT: ${{ secrets.DOCKER_PAT }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: bash .ai/run-stage.sh plan ${{ github.event.issue.number }}

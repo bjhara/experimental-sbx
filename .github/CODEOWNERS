@@ -1,0 +1,4 @@
+# The automation itself. PRs touching these fail the protected-paths check
+# and must be reviewed and merged manually by the owner. Replace with your handle.
+/.ai/     @bjhara
+/.github/ @bjhara
