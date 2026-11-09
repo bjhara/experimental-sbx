@@ -1,0 +1,32 @@
+name: AI PR merge
+# Fallback for GitHub auto-merge, which did not fire on the first PR even though all
+# required checks passed. When CI succeeds on an ai/issue-* PR, merge it.
+# The main ruleset still refuses any merge without green required checks.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+permissions:
+  contents: read
+jobs:
+  merge:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      startsWith(github.event.workflow_run.head_branch, 'ai/issue-')
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Merge the PR
+        env:
+          GH_TOKEN: ${{ secrets.AI_GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          pr=$(gh pr list -R "$REPO" --head "$BRANCH" --state open --json number --jq '.[0].number // empty')
+          if [ -z "$pr" ]; then
+            echo "No open PR for $BRANCH (already merged or closed)."; exit 0
+          fi
+          # Only merge the exact commit CI checked; a newer push gets its own CI run.
+          gh pr merge "$pr" -R "$REPO" --squash --match-head-commit "$HEAD_SHA"

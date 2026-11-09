@@ -43,7 +43,7 @@ added while `ai-working` is present are ignored.
 | [`.ai/setup.sh`](.ai/setup.sh) | Installs the toolchain inside the sandbox (JDK 25 + Maven) |
 | [`.ai/run-stage.sh`](.ai/run-stage.sh) | Runner-side driver: guard, labels, create sandbox, cleanup |
 | [`.ai/sandbox-run.sh`](.ai/sandbox-run.sh) | Sandbox-side driver: git identity, setup, run `claude -p` |
-| [`.github/workflows/`](.github/workflows/) | `ai-plan`, `ai-implement`, `ai-pr-failed`, and `ci` (`build` + `protected-paths`) |
+| [`.github/workflows/`](.github/workflows/) | `ai-plan`, `ai-implement`, `ai-pr-merge` (merges `ai/issue-*` PRs when CI passes, as a fallback for GitHub auto-merge), `ai-pr-failed`, and `ci` (`build` + `protected-paths`) |
 
 ## Setup (for your own copy)
 
